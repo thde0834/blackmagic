@@ -13,11 +13,11 @@ import ktx.box2d.box
 
 data class CollisionComponent(
     val center: Vector2,
-    val width: Float,
-    val height: Float,
-    val bodyType: BodyType,
+    private val width: Float,
+    private val height: Float,
+    private val bodyType: BodyType,
 ) : Component<CollisionComponent> {
-    lateinit var body: Body
+    private lateinit var body: Body
 
     fun setPosition(x: Float, y: Float) {
         body.setTransform(x, y, 0f)

@@ -28,7 +28,7 @@ class RenderSystem(
 
     override fun onTickEntity(entity: Entity) {
         val imageComponent = entity[ImageComponent]
-        val position = entity[PositionComponent].position
+        val position = entity[PositionComponent].center
 
         imageComponent.setPosition(position.x, position.y)
         imageComponent.image.toFront()

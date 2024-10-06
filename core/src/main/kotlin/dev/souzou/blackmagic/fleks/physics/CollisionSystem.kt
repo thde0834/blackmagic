@@ -33,7 +33,7 @@ class CollisionSystem(
     }
 
     override fun onTickEntity(entity: Entity) {
-        val (x, y) = entity[PositionComponent].position + entity[CollisionComponent].center
+        val (x, y) = entity[PositionComponent].center + entity[CollisionComponent].center
         entity[CollisionComponent].setPosition(x, y)
     }
 

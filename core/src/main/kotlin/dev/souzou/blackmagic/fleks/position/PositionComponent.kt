@@ -5,7 +5,7 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 
 data class PositionComponent(
-    val position: Vector2 = Vector2.Zero,
+    val center: Vector2 = Vector2.Zero,
     val z: Float = 0f
 ) : Component<PositionComponent>, Comparable<PositionComponent> {
     override fun type(): ComponentType<PositionComponent> = PositionComponent

@@ -12,8 +12,8 @@ import com.github.quillraven.fleks.World
 import ktx.app.gdxError
 
 data class AnimationComponent(
-    val atlasKey: String,
-    val playMode: PlayMode = PlayMode.LOOP,
+    private val atlasKey: String,
+    private val playMode: PlayMode = PlayMode.LOOP,
 ) : Component<AnimationComponent> {
     private lateinit var animation: Animation<TextureRegionDrawable>
     private lateinit var animationMap: Map<String, Animation<TextureRegionDrawable>>
