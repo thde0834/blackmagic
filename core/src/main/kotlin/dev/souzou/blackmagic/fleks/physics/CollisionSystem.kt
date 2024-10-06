@@ -33,8 +33,23 @@ class CollisionSystem(
     }
 
     override fun onTickEntity(entity: Entity) {
-        val (x, y) = entity[PositionComponent].center + entity[CollisionComponent].center
-        entity[CollisionComponent].setPosition(x, y)
+        if (!entity[CollisionComponent].impulse.isZero) {
+            entity[CollisionComponent].body.applyLinearImpulse(
+                entity[CollisionComponent].impulse,
+                entity[CollisionComponent].body.worldCenter,
+                true
+            )
+            entity[CollisionComponent].impulse.setZero()
+        }
+
+        val (x, y) = entity[CollisionComponent].body.position
+
+        log.debug {"$x, $y"}
+
+        entity[PositionComponent].setPosition(
+            x,
+            entity[PositionComponent].center.y
+        )
     }
 
     companion object {

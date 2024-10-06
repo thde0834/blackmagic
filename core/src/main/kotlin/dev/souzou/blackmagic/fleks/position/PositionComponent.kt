@@ -8,6 +8,11 @@ data class PositionComponent(
     val center: Vector2 = Vector2.Zero,
     val z: Float = 0f
 ) : Component<PositionComponent>, Comparable<PositionComponent> {
+    fun setPosition(x: Float, y: Float) {
+        center.x = x
+        center.y = y
+    }
+
     override fun type(): ComponentType<PositionComponent> = PositionComponent
 
     override fun compareTo(other: PositionComponent): Int {

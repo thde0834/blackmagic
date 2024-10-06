@@ -9,25 +9,30 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
+import dev.souzou.blackmagic.fleks.position.PositionComponent
 import ktx.box2d.box
+import ktx.math.plus
+import ktx.math.vec2
 
 data class CollisionComponent(
-    val center: Vector2,
+    val offset: Vector2,
     private val width: Float,
     private val height: Float,
     private val bodyType: BodyType,
 ) : Component<CollisionComponent> {
-    private lateinit var body: Body
+    val impulse = vec2()
+    lateinit var body: Body
 
     fun setPosition(x: Float, y: Float) {
-        body.setTransform(x, y, 0f)
+        body.position.x = x
+        body.position.y = y
     }
 
     override fun World.onAdd(entity: Entity) {
         body = inject<PhysicsWorld>().createBody(
             BodyDef().apply {
                 type = bodyType
-                position.set(center)
+                position.set(entity[PositionComponent].center + offset)
                 fixedRotation = true
                 allowSleep = false
             }

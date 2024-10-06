@@ -11,10 +11,14 @@ import dev.souzou.blackmagic.fleks.animation.AnimationComponent
 import dev.souzou.blackmagic.fleks.animation.AnimationSystem
 import dev.souzou.blackmagic.fleks.animation.AnimationType
 import dev.souzou.blackmagic.fleks.debug.DebugSystem
+import dev.souzou.blackmagic.fleks.movement.MoveComponent
+import dev.souzou.blackmagic.fleks.movement.MoveSystem
 import dev.souzou.blackmagic.fleks.physics.CollisionComponent
 import dev.souzou.blackmagic.fleks.physics.CollisionSystem
+import dev.souzou.blackmagic.fleks.player.PlayerComponent
 import dev.souzou.blackmagic.fleks.position.PositionComponent
 import dev.souzou.blackmagic.fleks.render.RenderSystem
+import dev.souzou.blackmagic.input.KeyboardProcessor
 import ktx.app.KtxScreen
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
@@ -36,6 +40,7 @@ class GameScreen : KtxScreen {
         systems {
             add(RenderSystem())
             add(AnimationSystem())
+            add(MoveSystem())
             add(CollisionSystem())
             add(DebugSystem())
         }
@@ -45,7 +50,7 @@ class GameScreen : KtxScreen {
         log.debug {"GameScreen is shown"}
 
         world.entity {
-            it += PositionComponent(vec2(5f, 2f))
+            it += PositionComponent(vec2(7f, 7f))
 
             it += ImageComponent(
                 width = 4f,
@@ -61,7 +66,12 @@ class GameScreen : KtxScreen {
                 vec2(0f, -0.5f),
                 1f, 2f,
                 BodyDef.BodyType.DynamicBody)
+
+            it += MoveComponent()
+            it += PlayerComponent()
         }
+
+        KeyboardProcessor(world)
     }
 
     override fun render(delta: Float) {
