@@ -11,22 +11,18 @@ import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import dev.souzou.blackmagic.fleks.position.PositionComponent
 import ktx.box2d.box
+import ktx.math.component1
+import ktx.math.component2
 import ktx.math.plus
 import ktx.math.vec2
 
-data class CollisionComponent(
+data class ColliderComponent(
     val offset: Vector2,
     private val width: Float,
     private val height: Float,
     private val bodyType: BodyType,
-) : Component<CollisionComponent> {
-    val impulse = vec2()
+) : Component<ColliderComponent> {
     lateinit var body: Body
-
-    fun setPosition(x: Float, y: Float) {
-        body.position.x = x
-        body.position.y = y
-    }
 
     override fun World.onAdd(entity: Entity) {
         body = inject<PhysicsWorld>().createBody(
@@ -48,7 +44,25 @@ data class CollisionComponent(
         body.userData = null
     }
 
-    override fun type(): ComponentType<CollisionComponent> = CollisionComponent
+    fun applyLinearImpulse(cos: Float, sin: Float, acceleration: Float) {
+        val (velX, velY) = body.linearVelocity
 
-    companion object: ComponentType<CollisionComponent>()
+        val impulse = vec2(
+            body.mass * (acceleration * cos - velX),
+            body.mass * (acceleration * sin - velY)
+        )
+
+        if (!impulse.isZero) {
+            body.applyLinearImpulse(
+                impulse,
+                body.worldCenter,
+                true
+            )
+            impulse.setZero()
+        }
+    }
+
+    override fun type(): ComponentType<ColliderComponent> = ColliderComponent
+
+    companion object: ComponentType<ColliderComponent>()
 }

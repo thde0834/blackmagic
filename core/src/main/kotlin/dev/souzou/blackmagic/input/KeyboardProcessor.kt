@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys.LEFT
 import com.badlogic.gdx.Input.Keys.RIGHT
 import com.github.quillraven.fleks.World
-import dev.souzou.blackmagic.fleks.movement.MoveComponent
+import dev.souzou.blackmagic.fleks.physics.RigidBodyComponent
 import dev.souzou.blackmagic.fleks.player.PlayerComponent
 import ktx.app.KtxInputAdapter
 
@@ -12,7 +12,7 @@ class KeyboardProcessor(
     private val world: World,
 ) : KtxInputAdapter {
     private val playerEntities = world.family {
-        all(PlayerComponent, MoveComponent)
+        all(PlayerComponent, RigidBodyComponent)
     }
     private var inputCos = 0f
 
@@ -26,7 +26,7 @@ class KeyboardProcessor(
 
     private fun updatePlayerMovement() {
         playerEntities.forEach { entity ->
-            with(entity[MoveComponent]) {
+            with(entity[RigidBodyComponent]) {
                 cos = inputCos
             }
         }
