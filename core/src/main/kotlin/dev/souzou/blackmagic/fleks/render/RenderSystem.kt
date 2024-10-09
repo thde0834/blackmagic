@@ -6,15 +6,13 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World.Companion.family
 import com.github.quillraven.fleks.World.Companion.inject
 import com.github.quillraven.fleks.collection.compareEntityBy
-import dev.souzou.blackmagic.fleks.animation.AnimationSystem
-import dev.souzou.blackmagic.fleks.position.PositionComponent
 import ktx.log.logger
 
 class RenderSystem(
     private val stage: Stage = inject()
 ) : IteratingSystem(
-    comparator = compareEntityBy(PositionComponent),
-    family = family { all(ImageComponent, PositionComponent) }
+    comparator = compareEntityBy(RenderComponent),
+    family = family { all(RenderComponent) }
 ) {
     override fun onTick() {
         super.onTick()
@@ -27,14 +25,10 @@ class RenderSystem(
     }
 
     override fun onTickEntity(entity: Entity) {
-        val imageComponent = entity[ImageComponent]
-        val position = entity[PositionComponent].center
-
-        imageComponent.setPosition(position.x, position.y)
-        imageComponent.image.toFront()
+        entity[RenderComponent].image.toFront()
     }
 
     companion object {
-        private val log = logger<AnimationSystem>()
+        private val log = logger<RenderSystem>()
     }
 }

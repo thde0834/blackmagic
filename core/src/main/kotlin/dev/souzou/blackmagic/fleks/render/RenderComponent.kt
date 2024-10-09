@@ -11,18 +11,24 @@ import com.github.quillraven.fleks.World
 import dev.souzou.blackmagic.fleks.animation.AnimationSystem
 import ktx.log.logger
 
-data class ImageComponent(
+data class RenderComponent(
+    val position: Vector2,
     val width: Float,
     val height: Float,
+    val z: Float = 0f,
     val image: Image = Image(),
     val scaling: Scaling = Scaling.fill
-) : Component<ImageComponent> {
+) : Component<RenderComponent>, Comparable<RenderComponent> {
+    val previousPosition: Vector2 = position
+
     init {
+        setPosition(position.x, position.y)
         image.setSize(width, height)
         image.setScaling(scaling)
     }
 
     fun setPosition(x: Float, y: Float) {
+        position.set(x, y)
         image.setPosition(
             x - 0.5f * width,
             y - 0.5f * height
@@ -33,9 +39,13 @@ data class ImageComponent(
         inject<Stage>().addActor(image)
     }
 
-    override fun type(): ComponentType<ImageComponent> = ImageComponent
+    override fun compareTo(other: RenderComponent): Int {
+        return z.compareTo(other.z)
+    }
 
-    companion object : ComponentType<ImageComponent>() {
+    override fun type(): ComponentType<RenderComponent> = RenderComponent
+
+    companion object : ComponentType<RenderComponent>() {
         private val log = logger<AnimationSystem>()
     }
 }

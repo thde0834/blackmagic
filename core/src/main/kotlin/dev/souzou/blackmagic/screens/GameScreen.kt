@@ -6,16 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.configureWorld
-import dev.souzou.blackmagic.fleks.render.ImageComponent
+import dev.souzou.blackmagic.fleks.render.RenderComponent
 import dev.souzou.blackmagic.fleks.animation.AnimationComponent
 import dev.souzou.blackmagic.fleks.animation.AnimationSystem
 import dev.souzou.blackmagic.fleks.animation.AnimationType
+import dev.souzou.blackmagic.fleks.camera.CameraSystem
 import dev.souzou.blackmagic.fleks.debug.DebugSystem
 import dev.souzou.blackmagic.fleks.physics.RigidBodyComponent
 import dev.souzou.blackmagic.fleks.physics.MovementSystem
 import dev.souzou.blackmagic.fleks.physics.ColliderComponent
 import dev.souzou.blackmagic.fleks.player.PlayerComponent
-import dev.souzou.blackmagic.fleks.position.PositionComponent
 import dev.souzou.blackmagic.fleks.render.RenderSystem
 import dev.souzou.blackmagic.input.KeyboardProcessor
 import ktx.app.KtxScreen
@@ -37,9 +37,10 @@ class GameScreen : KtxScreen {
             add(physicsWorld)
         }
         systems {
-            add(RenderSystem())
-            add(AnimationSystem())
+            add(CameraSystem())
             add(MovementSystem())
+            add(AnimationSystem())
+            add(RenderSystem())
             add(DebugSystem())
         }
     }
@@ -48,16 +49,15 @@ class GameScreen : KtxScreen {
         log.debug {"GameScreen is shown"}
 
         world.entity {
-            it += PositionComponent(vec2(2f, 7f))
-
-            it += ImageComponent(
+            it += RenderComponent(
+                position = vec2(2f, 7f),
                 width = 4f,
                 height = 4f,
             )
 
             it += AnimationComponent("player")
                 .apply {
-                    nextAnimation(AnimationType.RUN)
+                    nextAnimation(AnimationType.IDLE)
                 }
 
             it += ColliderComponent(
@@ -70,9 +70,8 @@ class GameScreen : KtxScreen {
         }
 
         world.entity {
-            it += PositionComponent(vec2(7f, 7f))
-
-            it += ImageComponent(
+            it += RenderComponent(
+                position = vec2(7f, 7f),
                 width = 4f,
                 height = 4f,
             )

@@ -9,7 +9,7 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
-import dev.souzou.blackmagic.fleks.position.PositionComponent
+import dev.souzou.blackmagic.fleks.render.RenderComponent
 import ktx.box2d.box
 import ktx.math.component1
 import ktx.math.component2
@@ -28,7 +28,7 @@ data class ColliderComponent(
         body = inject<PhysicsWorld>().createBody(
             BodyDef().apply {
                 type = bodyType
-                position.set(entity[PositionComponent].center + offset)
+                position.set(entity[RenderComponent].position + offset)
                 fixedRotation = true
                 allowSleep = false
             }
