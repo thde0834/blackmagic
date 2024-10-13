@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
@@ -7,7 +6,8 @@ plugins {
     id("blackmagic.java-conventions")
 }
 
-eclipse.project.name = ext.get("appName").toString() + "-core"
+val appName: String by project
+eclipse.project.name = "$appName-core"
 
 tasks.withType(JavaCompile::class.java).configureEach {
     options.encoding = "UTF-8"
